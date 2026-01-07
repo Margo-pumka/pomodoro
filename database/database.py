@@ -3,17 +3,17 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from settings import Settings
 
-engine = create_engine("postgresql+psycopg2://postgres:password@localhost:5432/pomodoro")
-Session = sessionmaker(bind=engine)
+settings = Settings()
 
-Session = sessionmaker(engine)
+engine = create_engine(settings.db_url())
+
+Session = sessionmaker(bind=engine)
 
 
 def get_db_session() -> Session:
     return Session
 
 
-# settings = Settings()
 #
 #
 # def get_db_connection() -> sqlite3.Connection:
