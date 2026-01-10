@@ -2,7 +2,7 @@ from sqlalchemy import select, delete, update
 from sqlalchemy.orm import Session
 
 from models import Tasks, Categories
-from schema import TaskSchema
+from schema import TaskCreateSchema
 
 
 class TaskRepository:
@@ -19,8 +19,14 @@ class TaskRepository:
             tasks: list[Tasks] = session.execute(select(Tasks)).scalars().all()
             return tasks
 
-    def create_task(self, task: TaskSchema) -> int:
-        task = Tasks(name=task.name, pomodoro_count=task.pomodoro_count, category_id=task.category_id)
+    def get_user_task(self, user_id: int, task_id: int) -> Tasks | None:
+        query = select(Tasks).where(Tasks.id == task_id, Tasks.user_id == user_id)
+        with self.db_session() as session:
+            task = session.execute(query).scalar_one_or_none()
+            return task
+
+    def create_task(self, task: TaskCreateSchema, user_id: int) -> int:
+        task = Tasks(name=task.name, pomodoro_count=task.pomodoro_count, category_id=task.category_id, user_id=user_id)
         with self.db_session() as session:
             session.add(task)
             session.commit()
