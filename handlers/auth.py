@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import RedirectResponse
 
 from dependency import get_auth_service
 from exception import UserNotFoundException, UserNotCorrectPasswordException
@@ -20,3 +21,15 @@ def login(
     except UserNotCorrectPasswordException as e:
         raise HTTPException(status_code=400, detail=str(e.detail))
     return user_login_data
+
+@router.get("/login/google", response_class=RedirectResponse)
+def google_login(auth_service: Annotated[AuthService, Depends(get_auth_service)]):
+    redirect_url = auth_service.get_google_redirect_url()
+    print(redirect_url)
+    return RedirectResponse(url=redirect_url)
+
+@router.get("/google")
+def google_auth(
+        auth_service: Annotated[AuthService, Depends(get_auth_service)],
+        code: str):
+    return auth_service.google_auth(code)
