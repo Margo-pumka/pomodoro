@@ -4,12 +4,15 @@ from dataclasses import dataclass
 from jose import jwt
 import datetime as dt
 
-from app.client import GoogleClient, YandexClient
+from app.users.auth.client import GoogleClient, YandexClient
 from app.exception import UserNotFoundException, UserNotCorrectPasswordException, TokenExpired, TokenNotCorrect
-from app.models import UserProfile
-from app.repository import UserRepository
-from app.schema import UserLoginSchema, UserCreateSchema, GoogleUserData, YandexUserData
+
+
 from app.settings import Settings
+from app.users.auth.schema import UserLoginSchema, GoogleUserData, YandexUserData
+from app.users.user_profile.models import UserProfile
+from app.users.user_profile.repository import UserRepository
+from app.users.user_profile.schema import UserCreateSchema
 
 
 @dataclass
@@ -78,4 +81,3 @@ class AuthService:
         created_user = await self.user_repository.create_user(create_user_data)
         access_token = self.generate_access_token(created_user.id)
         return UserLoginSchema(user_id=created_user.id, access_token=access_token)
-

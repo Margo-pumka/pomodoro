@@ -1,6 +1,6 @@
 from redis import asyncio as Redis
 
-from app.schema.tasks import TaskSchema
+from app.tasks.schema import TaskSchema
 
 
 class TaskCache:
