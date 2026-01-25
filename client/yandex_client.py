@@ -13,12 +13,11 @@ class YandexClient:
 
     async def get_user_info(self, code: str) -> YandexUserData:
         access_token = self._get_user_access_token(code)
-        async with self.async_client as client:
-            user_info = await client.get("https://login.yandex.ru/info?format=json",
+        user_info = await self.async_client.get("https://login.yandex.ru/info?format=json",
                                      headers={"Authorization": f"Oauth {access_token}"})
         return YandexUserData(**user_info.json(), access_token=access_token)
 
-    async def _get_user_access_token(self, code: str) -> str:
+    def _get_user_access_token(self, code: str) -> str:
         data = {
             "code": code,
             "client_id": self.settings.YANDEX_CLIENT_ID,
@@ -26,6 +25,5 @@ class YandexClient:
             "grant_type": "authorization_code"
         }
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        async with self.async_client as client:
-            response = await client.post(self.settings.YANDEX_TOKEN_URL, data=data, headers=headers)
+        response = httpx.post(self.settings.YANDEX_TOKEN_URL, data=data, headers=headers)
         return response.json()["access_token"]

@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_ID: str = os.getenv("GOOGLE_CLIENT_ID")
     GOOGLE_SECRET_KEY: str = os.getenv("GOOGLE_SECRET_KEY")
     GOOGLE_REDIRECT_URI: str = "http://localhost:8000/auth/google"
-    GOODLE_TOKEN_URL: str = "https://accounts.google.com/o/oauth2/token"
+    GOOGLE_TOKEN_URL: str = "https://accounts.google.com/o/oauth2/token"
     YANDEX_CLIENT_ID: str = os.getenv("YANDEX_CLIENT_ID")
     YANDEX_SECRET_KEY: str = os.getenv("YANDEX_SECRET_KEY")
     YANDEX_REDIRECT_URI: str = "http://localhost:8000/auth/yandex"
