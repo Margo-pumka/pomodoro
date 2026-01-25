@@ -1,3 +1,3 @@
 run:
-	poetry run gunicorn main:app -c infra/gunicorn.conf.py
+	poetry run gunicorn app.main:app -c gunicorn.conf.py
 
