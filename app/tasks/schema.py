@@ -8,7 +8,7 @@ class TaskSchema(BaseModel):
     category_id: int
     user_id: int
 
-    class Config:
+    class ConfigDict:
         from_attributes  = True
 
     @model_validator(mode="after")
