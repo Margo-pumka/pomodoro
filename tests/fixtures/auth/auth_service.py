@@ -16,9 +16,9 @@ def mock_auth_service(yandex_client, google_client, fake_user_repository) -> Aut
 
 
 @pytest_asyncio.fixture
-async def auth_service(yandex_client, google_client, get_db_session) -> AuthService:
+async def auth_service(yandex_client, google_client, db_session) -> AuthService:
     return AuthService(
-        user_repository=UserRepository(db_session=get_db_session),
+        user_repository=UserRepository(db_session=db_session),
         settings=Settings(),
         google_client=google_client,
         yandex_client=yandex_client)

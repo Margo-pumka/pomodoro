@@ -7,7 +7,6 @@ pytest_plugins = [
     "tests.fixtures.auth.auth_service",
     "tests.fixtures.auth.clients",
     "tests.fixtures.infrastructure",
-    "tests.fixtures.users.user_model",
 ]
 
 @pytest.fixture(scope="session")
