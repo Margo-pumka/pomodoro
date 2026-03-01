@@ -6,7 +6,7 @@ from app.users.auth.service import AuthService
 from app.users.user_profile.repository import UserRepository
 
 
-@pytest.fixture
+@pytest_asyncio.fixture
 def mock_auth_service(yandex_client, google_client, fake_user_repository) -> AuthService:
     return AuthService(
         fake_user_repository,
