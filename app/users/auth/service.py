@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from jose import jwt
 import datetime as dt
 
-from app.users.auth.client import GoogleClient, YandexClient
+from app.users.auth.client import GoogleClient, YandexClient, MailClient
 from app.exception import UserNotFoundException, UserNotCorrectPasswordException, TokenExpired, TokenNotCorrect
 
 
@@ -21,6 +21,7 @@ class AuthService:
     settings: Settings
     google_client: GoogleClient
     yandex_client: YandexClient
+    mail_client: MailClient
 
     async def login(self, username: str, password: str) -> UserLoginSchema:
         user: UserProfile = await self.user_repository.get_user_by_username(username)
@@ -65,6 +66,7 @@ class AuthService:
                                             name=user_data.name)
         created_user = await self.user_repository.create_user(create_user_data)
         access_token = self.generate_access_token(created_user.id)
+        self.mail_client.send_welcome_email(to=user_data.email)
         return UserLoginSchema(user_id=created_user.id, access_token=access_token)
 
     def get_yandex_redirect_url(self) -> str:
@@ -80,4 +82,5 @@ class AuthService:
                                             name=user_data.name)
         created_user = await self.user_repository.create_user(create_user_data)
         access_token = self.generate_access_token(created_user.id)
+        self.mail_client.send_welcome_email(to=user_data.default_email)
         return UserLoginSchema(user_id=created_user.id, access_token=access_token)

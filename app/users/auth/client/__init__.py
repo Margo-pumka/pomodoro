@@ -1,4 +1,5 @@
 from app.users.auth.client.google_client import GoogleClient
+from app.users.auth.client.mail import MailClient
 from app.users.auth.client.yandex_client import YandexClient
 
-__all__ = ['GoogleClient', 'YandexClient']
+__all__ = ['GoogleClient', 'YandexClient', 'MailClient']
