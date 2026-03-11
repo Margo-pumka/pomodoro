@@ -13,7 +13,7 @@ def settings():
     return Settings()
 
 
-engine = create_async_engine(url="postgresql+asyncpg://postgres:password@0.0.0.0:5433/pomodoro", future=True, echo=True, pool_pre_ping=False, poolclass=NullPool)
+engine = create_async_engine(url="postgresql+asyncpg://postgres:password@0.0.0.0:5432/pomodoro", future=True, echo=True, pool_pre_ping=False, poolclass=NullPool)
 
 
 AsyncSessionFactory = async_sessionmaker(

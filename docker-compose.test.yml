@@ -5,7 +5,7 @@ services:
     restart: always
     shm_size: 128mb
     ports:
-      - '5433:5432'
+      - '5432:5432'
     environment:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
@@ -15,4 +15,25 @@ services:
     image: redis:7.2.4-alpine
     restart: always
     ports:
-      - '6380:6379'
+      - '6379:6379'
+
+  rabbitmq-test:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  celery-test:
+    image: python:3.11-slim
+    command: >
+      sh -c "
+        pip install celery[redis] &&
+        celery -A tasks worker --loglevel=info
+      "
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq-test
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq-test:5672//
+    working_dir: /app

@@ -16,3 +16,24 @@ services:
     restart: always
     ports:
       - '6379:6379'
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  celery:
+    image: python:3.11-slim
+    command: >
+      sh -c "
+        pip install celery[redis] &&
+        celery -A tasks worker --loglevel=info
+      "
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+    environment:
+      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq:5672//
+    working_dir: /app
