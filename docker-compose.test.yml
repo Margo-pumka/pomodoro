@@ -23,17 +23,17 @@ services:
       - "5672:5672"
       - "15672:15672"
 
-  celery-test:
-    image: python:3.11-slim
-    command: >
-      sh -c "
-        pip install celery[redis] &&
-        celery -A tasks worker --loglevel=info
-      "
-    volumes:
-      - .:/app
-    depends_on:
-      - rabbitmq-test
-    environment:
-      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq-test:5672//
-    working_dir: /app
+#  celery-test:
+#    image: python:3.11-slim
+#    command: >
+#      sh -c "
+#        pip install celery[redis] &&
+#        celery -A tasks worker --loglevel=info
+#      "
+#    volumes:
+#      - .:/app
+#    depends_on:
+#      - rabbitmq-test
+#    environment:
+#      - CELERY_BROKER_URL=amqp://guest:guest@rabbitmq-test:5672//
+#    working_dir: /app
